@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button } from "nr1";
 import Tree, { useTreeState, treeHandlers } from "react-hyper-tree";
 import { has, uniqBy, map, filter } from "lodash";
@@ -39,15 +39,12 @@ const recursive = (data, sortOrder, i) => {
       children: filterByValue(data.children, sortValue, unique),
     })
   );
-  // const filtered = uniques.map((uniqueValue) =>
-  //   filterByValue(data.children, sortKey, uniqueValue)
-  // );
-  console.log(children);
-  return children.map((child) => {
-    const test = recursive(child, sortOrder, ++i);
-    console.log(test);
-    return child;
+
+  data.children = children;
+  data.children.map((item) => {
+    return recursive(item, sortOrder, i+1);
   });
+  return data;
 };
 
 const rebuildTree = (data, sortOrder) => {
@@ -61,12 +58,19 @@ const filterFn = (filter: string) => (node: any) => {
 export const App = () => {
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
-  const [tree, setTree] = useState(data);
+  const [tree, setTree] = useState();
 
+  let required2, handlers2
   const applySort = () => {
     const sortOrderArray = removeWhiteSpaces(sort).split(",");
     const tree = rebuildTree(data, sortOrderArray);
-    console.log(tree);
+    setTree(tree)
+    ({ required2, handlers2 } = useTreeState({
+      data,
+      id: "your_tree_id2",
+      defaultOpened: true,
+      filter: filterFn(filter),
+    }));
   };
 
   const { required, handlers } = useTreeState({
@@ -104,6 +108,7 @@ export const App = () => {
         onChange={(e: any) => setFilter(e.target.value)}
       />
       <Tree {...required} {...handlers} renderNode={renderNode} />
+      {required2 && handlers2 ? <Tree {...required2} {...handlers2} renderNode={renderNode} /> : ""}
     </div>
   );
 };
