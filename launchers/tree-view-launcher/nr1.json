@@ -1,0 +1,7 @@
+{
+  "schemaType": "LAUNCHER",
+  "id": "tree-view-launcher",
+  "displayName": "TreeViewLauncher",
+  "description": "Describe me",
+  "rootNerdletId": "d6a4e26c-b0b1-437a-95b0-6658753e4e4d.tree-view-nerdlet"
+}
