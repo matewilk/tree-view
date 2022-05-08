@@ -10,11 +10,13 @@
         "uuid": "d6a4e26c-b0b1-437a-95b0-6658753e4e4d"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.1.1",
+        "@fortawesome/free-solid-svg-icons": "^6.1.1",
+        "@fortawesome/react-fontawesome": "^0.1.18",
         "lodash": "^4.17.21",
         "prop-types": "15.7.2",
         "react": "17.0.2",
-        "react-dom": "17.0.2",
-        "react-hyper-tree": "^0.3.12"
+        "react-dom": "17.0.2"
     },
     "browserslist": [
         "last 2 versions",

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { TextField, Button } from "nr1";
-import { has, uniqBy, map, filter } from "lodash";
 
 import { data } from "./data";
 
-import { TreeView } from "./TreeVIew";
+import "./components/FontawesomeIcons"
+
+import { TreeView } from "./components/TreeView";
+import { buildTree } from "./build-tree";
 
 const style = {
   display: "flex",
@@ -16,41 +18,8 @@ const style = {
 // remove white spaces from string
 const removeWhiteSpaces = (string) => string.replace(/\s+/g, "");
 
-// get unique values (from array of objects) by key name (iteratee)
-const getUniqueValues = (array, iteratee) =>
-  map(uniqBy(array, iteratee), iteratee);
-
-// filter array of objects by keyName
-const filterByKey = (array, keyName) =>
-  array.filter((item) => has(item, keyName));
-
-// filter array of objects by value
-const filterByValue = (array, key, value) => filter(array, { [key]: value });
-
-// build child object with desired name
-const buildChildObject = (name, object) => ({ name, ...object });
-
-const recursive = (data, sortOrder, i) => {
-  const sortValue = sortOrder[i];
-  if (sortValue === undefined) return;
-
-  const uniques = getUniqueValues(data.children, sortValue);
-  const children = uniques.map((unique) =>
-    buildChildObject(unique, {
-      children: filterByValue(data.children, sortValue, unique),
-    })
-  );
-
-  data.children = children;
-  data.children.map((item) => {
-    return recursive(item, sortOrder, i+1);
-  });
-  return data;
-};
-
-const rebuildTree = (data, sortOrder) => {
-  return recursive(data, sortOrder, 0);
-};
+// check  whether to traverse the tree based on sort state input (change to field validation)
+const shouldTraverse = (array) => array.length <= 1 && array[0] === "";
 
 export const App = () => {
   const [filter, setFilter] = useState("");
@@ -58,10 +27,14 @@ export const App = () => {
   const [tree, setTree] = useState(data);
 
   const applySort = () => {
-    const sortOrderArray = removeWhiteSpaces(sort).split(",");
-    const tree = rebuildTree(data, sortOrderArray);
-    setTree({ ...tree})
+    const sortOrderArr = removeWhiteSpaces(sort).split(",");
+    const tree = !shouldTraverse(sortOrderArr)
+      ? buildTree(data, sortOrderArr)
+      : data;
+
+    setTree([ ...tree ]);
   };
+  
 
   return (
     <div>
@@ -86,7 +59,7 @@ export const App = () => {
         value={filter}
         onChange={(e: any) => setFilter(e.target.value)}
       />
-      <TreeView tree={tree} filter={filter} />
+      <TreeView data={tree} filter={filter} />
     </div>
   );
 };
