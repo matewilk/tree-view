@@ -6,7 +6,7 @@ import { data } from "./data";
 import "./components/FontawesomeIcons"
 
 import { TreeView } from "./components/TreeView";
-import { buildTree } from "./build-tree";
+import { buildTree } from "./lib/build-tree";
 
 const style = {
   display: "flex",

@@ -1,10 +1,10 @@
 import React from "react";
 import Tree from "./Tree";
 
-export const TreeView = ({ data }: { data: anyß }) => {
-  return (
-    <>
-      <Tree data={data} />
-    </>
-  );
+import { filterTree } from "../lib/build-tree";
+
+export const TreeView = ({ data, filter }: { data: any; filter: string }) => {
+  const tree = filterTree(data, filter);
+
+  return <Tree data={tree} filter={filter} />;
 };
