@@ -35,7 +35,7 @@ const TreeNode = ({ node }) => {
           <FontAwesomeIcon
             icon={`fa-solid ${hasChild ? "fa-folder" : "fa-file"}`}
           />
-          {node.name}
+          {node.name} {node.count ? `(${node.count})` : ""}
         </div>
       </div>
 

@@ -32,25 +32,39 @@ const buildNodesRecursive = (root, data, sortOrder, i) => {
 };
 
 // ---- Start tree recursion with sort order ----
-export const buildTree = (data, sortOrder) => {
-  return [buildNodesRecursive({ id: "1", name: "Root" }, data[0], sortOrder, 0)];
+export const buildTree = (data: any, sortOrder: string) => {
+  return [
+    buildNodesRecursive({ id: "1", name: "Root" }, data[0], sortOrder, 0),
+  ];
 };
 
 // ---- Utils -----
 
 // Function to filter tree by node property (default node name)
-export const filterTree = (tree, filter, prop = 'name') => {
-  const getChildren = (result, object) => {
+export const filterTree = (tree: any, filter: string, prop = "name") => {
+  const getChildren = (result: any, object: any) => {
     if (object[prop].includes(filter)) {
-        result.push(object);
-        return result;
+      result.push(object);
+      return result;
     }
     if (Array.isArray(object.children)) {
-        const children = object.children.reduce(getChildren, []);
-        if (children.length) result.push({ ...object, children });
+      const children = object.children.reduce(getChildren, []);
+      if (children.length) result.push({ ...object, children });
     }
     return result;
+  };
+
+  return tree.reduce(getChildren, []);
 };
 
-return tree.reduce(getChildren, []);
-}
+// Function to add count to nodes/leafs
+export const addCount = (node: any) => {
+  if (node.children == undefined) return 1;
+  node.count = 0;
+  node.children.forEach(function (c: any) {
+    const r = addCount(c);
+    //if (!r) console.log(n);
+    node.count += r
+  });
+  return node.count;
+};

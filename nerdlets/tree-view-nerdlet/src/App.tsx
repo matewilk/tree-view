@@ -16,10 +16,10 @@ const style = {
 };
 
 // remove white spaces from string
-const removeWhiteSpaces = (string) => string.replace(/\s+/g, "");
+const removeWhiteSpaces = (string: string) => string.replace(/\s+/g, "");
 
 // check  whether to traverse the tree based on sort state input (change to field validation)
-const shouldTraverse = (array) => array.length <= 1 && array[0] === "";
+const shouldTraverse = (array: any[]) => array.length <= 1 && array[0] === "";
 
 export const App = () => {
   const [filter, setFilter] = useState("");
